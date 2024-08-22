@@ -7,22 +7,29 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc'; 
+dayjs.extend(utc); 
 
 type FormData = {
   date: string;
   description: string;
-  location: string;
+  localization: string;
   time: string;
-  title: string;
+  name: string;
+  type: string;
+  number_of_person:number
 };
 
 const EventForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     date: '',
     description: '',
-    location: '',
+    localization: '',
     time: '',
-    title: '',
+    name: '',
+    type: '',
+    number_of_person: 1,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,24 +56,36 @@ const EventForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const combinedTimestamp = dayjs.utc(`${formData.date} ${formData.time}`).toISOString();
+    const payload = {
+      name: formData.name,
+      type: formData.type,
+      time_event: combinedTimestamp,
+      number_of_person: formData.number_of_person,
+      localization: formData.localization,
+      description: formData.description
+    }
     try {
       const response = await fetch('/api/event/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
         alert('Evento criado com sucesso!');
-        // Resetar o formulário
+        //resetar forms
         setFormData({
           date: '',
           description: '',
-          location: '',
+          localization: '',
           time: '',
-          title: '',
+          name: '',
+          type: '',
+          number_of_person: 0,
         });
       } else {
         alert('Erro ao criar o evento.');
@@ -78,15 +97,24 @@ const EventForm: React.FC = () => {
 
   return (
     <Box sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom color={"#6a27a1"} align='center'>
         Criar Evento
       </Typography>
       <form onSubmit={handleSubmit}>
         <TextField
           fullWidth
           label="Título"
-          name="title"
-          value={formData.title}
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          margin="normal"
+          required
+        />
+        <TextField
+          fullWidth
+          label="Tipo"
+          name="type"
+          value={formData.type}
           onChange={handleChange}
           margin="normal"
           required
@@ -104,27 +132,67 @@ const EventForm: React.FC = () => {
         <TextField
           fullWidth
           label="Localização"
-          name="location"
-          value={formData.location}
+          name="localization"
+          value={formData.localization}
           onChange={handleChange}
           margin="normal"
           required
         />
+        <TextField
+          fullWidth
+          label="Número de pessoas"
+          name="number_of_person" 
+          type="number" 
+          value={formData.number_of_person} 
+          onChange={handleChange} 
+          margin="normal"
+          required
+          inputProps={{
+            step: 1, 
+            min: 1, 
+          }}
+        />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Data"
-            value={formData.date ? new Date(formData.date) : null}
+            value={formData.date ? dayjs(formData.date) : null}
             onChange={handleDateChange}
-            //renderInput={(params) => <TextField fullWidth margin="normal" required {...params} />}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                margin: "normal",
+                required: true
+              }
+            }}
           />
           <TimePicker
             label="Hora"
-            value={formData.time ? new Date(`1970-01-01T${formData.time}:00`) : null}
+            value={formData.time ? dayjs.utc(`${formData.time}`) : null}
             onChange={handleTimeChange}
-            //renderInput={(params) => <TextField fullWidth margin="normal" required {...params} />}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                margin: "normal",
+                required: true
+              }
+            }}
+            ampm={false}
           />
         </LocalizationProvider>
-        <Button variant="contained" color="primary" type="submit" fullWidth sx={{ mt: 2 }}>
+        <Button variant="contained"
+          color="primary"
+          type="submit"
+          fullWidth
+          sx={{ 
+            mt: 2, 
+            backgroundColor: '#6a27a1', 
+            color: '#ffffff',  
+            '&:hover': {
+              backgroundColor: '#4d137c', 
+              color: '#ffffff',
+            },
+          }}
+          >
           Criar Evento
         </Button>
       </form>

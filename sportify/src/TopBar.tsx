@@ -74,6 +74,9 @@ return (
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
+                "&:hover": {
+                    color: "#a69cad",  
+                },
                 }}
             >
                 Sportify
@@ -109,8 +112,8 @@ return (
             }}
             >
             {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                <Typography textAlign="center" component={Link} to={page.path}
+                <MenuItem key={page.name} onClick={handleCloseNavMenu} component={Link} to={page.path}>
+                <Typography textAlign="center" 
                 sx={{
                     color: "#000000",
                 }}
@@ -158,12 +161,14 @@ return (
                 Sportify
             </Typography>
         </Box>
-        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, }}>
             {pages.map((page) => (
             <Button
                 key={page.name}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ my: 2, color: "white", display: "block", "&:hover": {
+                    color: "#a69cad",  
+                }, }}
                 component={Link}
                 to={page.path}
             >
