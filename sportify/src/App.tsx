@@ -1,7 +1,7 @@
 
 import {BrowserRouter, Routes, Route} from "react-router-dom"
-import EventListPage from './EventsListPage'
-import CreateEventsPage from './CreateEventsPage'
+import EventListPage from './list_events/EventsListPage'
+import CreateEventsPage from './create_event/CreateEventsPage'
 
 
 function App() {

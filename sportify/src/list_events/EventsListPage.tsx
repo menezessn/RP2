@@ -1,5 +1,5 @@
 import EventList from "./EventList";
-import TopBar from "./TopBar";
+import TopBar from "../common/TopBar";
 
 function EventsPage(){
     return(

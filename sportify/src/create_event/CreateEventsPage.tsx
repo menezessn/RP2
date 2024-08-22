@@ -1,4 +1,4 @@
-import TopBar from "./TopBar";
+import TopBar from "../common/TopBar";
 import CreateEvent from "./CreateEvent";
 
 
