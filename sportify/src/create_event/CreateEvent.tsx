@@ -191,6 +191,7 @@ const EventForm: React.FC = () => {
               backgroundColor: '#4d137c', 
               color: '#ffffff',
             },
+            marginBottom:5
           }}
           >
           Criar Evento
