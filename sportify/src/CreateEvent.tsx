@@ -85,7 +85,7 @@ const EventForm: React.FC = () => {
           time: '',
           name: '',
           type: '',
-          number_of_person: 0,
+          number_of_person: 1,
         });
       } else {
         alert('Erro ao criar o evento.');
@@ -98,7 +98,7 @@ const EventForm: React.FC = () => {
   return (
     <Box sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}>
       <Typography variant="h4" gutterBottom color={"#6a27a1"} align='center'>
-        Criar Evento
+        Novo Evento
       </Typography>
       <form onSubmit={handleSubmit}>
         <TextField
