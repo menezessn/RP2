@@ -23,7 +23,7 @@ const EventList: React.FC = () => {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    fetch("/api/event/get/all")
+    fetch("https://66d6f9b6006bfbe2e64f53b6.mockapi.io/api/test/events")
       .then((response) => response.json())
       .then((data) => setEvents(data))
       .catch((error) => console.error("Erro ao buscar os eventos:", error));
