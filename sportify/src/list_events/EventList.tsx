@@ -12,9 +12,9 @@ interface Event {
   name: string;
   type: string;
   time_event: string;
-  number_of_person: number;
+  number_of_person:number
   localization: string;
-  description: string | null;
+  description: string;
 }
 
 const EventList: React.FC = () => {
@@ -31,6 +31,7 @@ const EventList: React.FC = () => {
 
   const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page);
+    window.scrollTo(0, 0);
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -40,36 +41,66 @@ const EventList: React.FC = () => {
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <Paper elevation={3} sx={{ p: 3 }}>
-        <Typography variant="h4" align="center" gutterBottom>
-          Lista de Eventos
+        <Typography 
+          variant="h4" 
+          align="center" 
+          gutterBottom
+          sx={{ 
+            fontFamily: 'Roboto, sans-serif', 
+            color: '#6a27a1' ,
+            fontWeight: "bold"
+          }}
+        >
+          Atividades
         </Typography>
         <Grid container spacing={2}>
-          {currentItems.map((event, index) => (
+          {currentItems.map((event, index) => {
+            
+
+              const eventDate = new Date(event.time_event);
+
+              const date = eventDate.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              });
+
+              const time = eventDate.toLocaleTimeString('pt-BR', {
+                hour: '2-digit',
+                minute: '2-digit',
+              });
+
+            return(
+
             <Grid item xs={12} key={index}>
               <Card variant="outlined">
                 <CardContent>
-                  <Typography variant="h6" color="primary">
+                  <Typography variant="h6" color="#6a27a1">
                     {event.name}
                   </Typography>
                   <Typography variant="body2">
-                    Tipo: {event.type}
+                    <strong>Tipo:</strong> {event.type}
                   </Typography>
                   <Typography variant="body2">
-                    Horário: {event.time_event}
+                    <strong>Data:</strong> {date}
                   </Typography>
                   <Typography variant="body2">
-                    Localização: {event.localization}
+                    <strong>Horário:</strong> {time}
                   </Typography>
                   <Typography variant="body2">
-                    Número de Pessoas: {event.number_of_person}
+                    <strong>Localização:</strong> {event.localization}
                   </Typography>
                   <Typography variant="body2">
-                    Descrição: {event.description || "N/A"}
+                    <strong>Número de Pessoas:</strong> {event.number_of_person}
+                  </Typography>
+                  <Typography variant="body2">
+                    <strong>Descrição:</strong> {event.description || "N/A"}
                   </Typography>
                 </CardContent>
               </Card>
             </Grid>
-          ))}
+            );
+})}
         </Grid>
         <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
           <Pagination
